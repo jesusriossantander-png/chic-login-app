@@ -14,7 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      driving_controls: {
+        Row: {
+          control_date: string
+          created_at: string
+          driver_name: string
+          id: string
+          notes: string | null
+          score: number
+          updated_at: string
+          user_id: string
+          vehicle: string | null
+        }
+        Insert: {
+          control_date?: string
+          created_at?: string
+          driver_name: string
+          id?: string
+          notes?: string | null
+          score?: number
+          updated_at?: string
+          user_id: string
+          vehicle?: string | null
+        }
+        Update: {
+          control_date?: string
+          created_at?: string
+          driver_name?: string
+          id?: string
+          notes?: string | null
+          score?: number
+          updated_at?: string
+          user_id?: string
+          vehicle?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          company: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      safety_reports: {
+        Row: {
+          corrective_actions: string | null
+          created_at: string
+          description: string | null
+          id: string
+          location: string | null
+          report_date: string
+          severity: Database["public"]["Enums"]["severity_level"]
+          status: Database["public"]["Enums"]["report_status"]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          corrective_actions?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          report_date?: string
+          severity?: Database["public"]["Enums"]["severity_level"]
+          status?: Database["public"]["Enums"]["report_status"]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          corrective_actions?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          report_date?: string
+          severity?: Database["public"]["Enums"]["severity_level"]
+          status?: Database["public"]["Enums"]["report_status"]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +127,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      report_status: "abierto" | "en_revision" | "cerrado"
+      severity_level: "baja" | "media" | "alta" | "critica"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +255,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      report_status: ["abierto", "en_revision", "cerrado"],
+      severity_level: ["baja", "media", "alta", "critica"],
+    },
   },
 } as const
