@@ -77,16 +77,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SafetyDesk — Gestión de informes de seguridad e higiene" },
+      { title: "ESIM S.R.L. - Gestion Inteligente de Seguridad Industrial" },
       {
         name: "description",
         content:
-          "Plataforma para cargar informes de seguridad e higiene y controles de conducción con indicadores en tiempo real.",
+          "Plataforma moderna para centralizar inspecciones, reportes, equipos de proteccion, gestion documental y procesos de seguridad.",
       },
-      { property: "og:title", content: "SafetyDesk" },
+      { property: "og:title", content: "ESIM S.R.L." },
       {
         property: "og:description",
-        content: "Informes de seguridad e higiene y control de conducción, con indicadores claros.",
+        content:
+          "Gestion inteligente de seguridad industrial, higiene ocupacional, medio ambiente e inspecciones tecnicas.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
