@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { toast } from "sonner";
 import { CarFront, Download, FileText, Loader2, Plus, Search, Upload, X } from "lucide-react";
+import { z } from "zod";
 
-export const Route = createFileRoute("/_authenticated/vehiculos")({ component: VehiculosPage });
+export const Route = createFileRoute("/_authenticated/vehiculos")({
+  component: VehiculosPage,
+  validateSearch: z.object({ q: z.string().optional() }).parse,
+});
 
 type Vehicle = Tables<"vehicles">;
 type VehicleDocument = Tables<"vehicle_documents">;
@@ -36,8 +40,10 @@ function valuesForLocal(form: Record<string, string>, userId: string, photoPath:
 
 function VehiculosPage() {
   const { user } = Route.useRouteContext();
+  const { q: searchFromUrl } = Route.useSearch();
   const qc = useQueryClient();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchFromUrl ?? "");
+  useEffect(() => setSearch(searchFromUrl ?? ""), [searchFromUrl]);
   const [selected, setSelected] = useState<Vehicle | null>(null);
   const [openNew, setOpenNew] = useState(false);
   const [localMode, setLocalMode] = useState(true);

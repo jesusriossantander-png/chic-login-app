@@ -127,10 +127,10 @@ export function PersonSearch() {
       </div>
 
       {query && term.length >= 2 && (
-        <div className="absolute left-0 right-0 z-50 mt-2 max-h-80 overflow-y-auto rounded-2xl border border-border bg-card p-2 shadow-elevated backdrop-blur-xl">
+        <div className="absolute left-0 right-0 z-50 mt-2 max-h-80 overflow-y-auto rounded-2xl border border-border/50 bg-card p-2 shadow-xl shadow-black/5">
           {results.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-8 text-center">
-              <User className="h-8 w-8 text-muted-foreground/40" />
+              <User className="h-8 w-8 text-muted-foreground/60" />
               <p className="text-sm text-muted-foreground">No se encontraron personas con ese nombre.</p>
             </div>
           ) : (
@@ -139,6 +139,7 @@ export function PersonSearch() {
                 <Link
                   key={`${r.module}-${i}`}
                   to={r.to}
+                  search={{ q: r.name }}
                   className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-surface"
                 >
                   <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
@@ -153,7 +154,7 @@ export function PersonSearch() {
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-sm font-medium">{r.name}</div>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span className="font-medium text-foreground/70">{r.label}</span>
+                      <span className="font-medium text-foreground/80">{r.label}</span>
                       <span>·</span>
                       <span className="truncate">{r.detail}</span>
                     </div>
@@ -165,7 +166,7 @@ export function PersonSearch() {
         </div>
       )}
 
-      <style>{`.input { width: 100%; border-radius: 0.75rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.625rem 0.75rem; font-size: 0.875rem; outline: none; backdrop-filter: blur(8px); } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
+      <style>{`.input { width: 100%; border-radius: 0.75rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.625rem 0.75rem; font-size: 0.875rem; outline: none; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
     </div>
   );
 }

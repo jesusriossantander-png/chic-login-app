@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Gavel, Loader2, Plus, Search, Trash2, X } from "lucide-react";
@@ -41,9 +41,10 @@ function writeLocal<T>(key: string, values: T[]) {
   localStorage.setItem(key, JSON.stringify(values));
 }
 
-export function MultasPage({ user }: { user: User }) {
+export function MultasPage({ user, searchQuery }: { user: User; searchQuery?: string }) {
   const qc = useQueryClient();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchQuery ?? "");
+  useEffect(() => setSearch(searchQuery ?? ""), [searchQuery]);
   const [openNew, setOpenNew] = useState(false);
   const [localMode, setLocalMode] = useState(true);
 

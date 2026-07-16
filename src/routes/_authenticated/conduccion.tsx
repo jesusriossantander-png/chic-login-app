@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Plus, Trash2, Loader2, X, Gauge } from "lucide-react";
+import { Plus, Search, Trash2, Loader2, X, Gauge } from "lucide-react";
 import { z } from "zod";
 
 export const Route = createFileRoute("/_authenticated/conduccion")({
   component: ConduccionPage,
+  validateSearch: z.object({ q: z.string().optional() }).parse,
 });
 
 const schema = z.object({
@@ -21,6 +22,9 @@ const schema = z.object({
 function ConduccionPage() {
   const qc = useQueryClient();
   const { user } = Route.useRouteContext();
+  const { q: searchFromUrl } = Route.useSearch();
+  const [search, setSearch] = useState(searchFromUrl ?? "");
+  useEffect(() => setSearch(searchFromUrl ?? ""), [searchFromUrl]);
   const [open, setOpen] = useState(false);
 
   const { data = [], isLoading } = useQuery({
@@ -47,6 +51,13 @@ function ConduccionPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return !term ? data : data.filter((c) =>
+      [c.driver_name, c.vehicle].filter(Boolean).some((v) => v!.toLowerCase().includes(term))
+    );
+  }, [data, search]);
+
   const avg = data.length ? Math.round(data.reduce((a, b) => a + b.score, 0) / data.length) : 0;
 
   return (
@@ -66,6 +77,11 @@ function ConduccionPage() {
         </button>
       </div>
 
+      <div className="relative mt-6 max-w-md">
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <input className="input pl-9" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por conductor o vehículo..." />
+      </div>
+
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         <StatBox label="Controles" value={data.length} />
         <StatBox label="Puntaje promedio" value={avg} suffix="/100" />
@@ -77,13 +93,13 @@ function ConduccionPage() {
           <div className="flex items-center justify-center py-16 text-muted-foreground">
             <Loader2 className="h-5 w-5 animate-spin" />
           </div>
-        ) : data.length === 0 ? (
+        ) : filtered.length === 0 ? (
           <div className="py-16 text-center text-sm text-muted-foreground">
-            Sin controles todavía.
+            {search ? "No se encontraron controles." : "Sin controles todavía."}
           </div>
         ) : (
           <div className="divide-y divide-border">
-            {data.map((c) => (
+            {filtered.map((c) => (
               <div key={c.id} className="flex items-center gap-4 px-5 py-4">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-surface text-muted-foreground">
                   <Gauge className="h-4 w-4" />
@@ -109,6 +125,7 @@ function ConduccionPage() {
       </div>
 
       {open && <NewControlModal onClose={() => setOpen(false)} userId={user.id} />}
+      <style>{`.input { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.55rem 0.7rem; font-size: 0.875rem; outline: none; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
     </div>
   );
 }
