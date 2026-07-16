@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { CarFront, LayoutDashboard, ClipboardList, Gauge, LogOut, Shield, FolderTree, ChevronDown, BookOpen, Gavel, ListTodo } from "lucide-react";
+import { CarFront, LayoutDashboard, ClipboardList, Gauge, LogOut, Shield, FolderTree, ChevronDown, BookOpen, Gavel, ListTodo, Sun, Moon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -33,6 +33,14 @@ function AuthedLayout() {
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [jesusOpen, setJesusOpen] = useState(pathname.startsWith("/jesus"));
+  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
+
+  function toggleTheme() {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("safetydesk:theme", next ? "dark" : "light");
+  }
 
   async function handleSignOut() {
     await queryClient.cancelQueries();
@@ -109,9 +117,19 @@ function AuthedLayout() {
           </div>
         </nav>
         <div className="border-t border-border p-3">
-          <div className="mb-2 px-2 text-xs text-muted-foreground">
-            <div className="truncate font-medium text-foreground">{user.email}</div>
-            <div>Sesión activa</div>
+          <div className="mb-2 flex items-center justify-between px-2 text-xs text-muted-foreground">
+            <div className="min-w-0 flex-1">
+              <div className="truncate font-medium text-foreground">{user.email}</div>
+              <div>Sesión activa</div>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className="shrink-0 rounded-md p-1.5 text-muted-foreground transition hover:bg-surface hover:text-foreground"
+              aria-label={dark ? "Modo claro" : "Modo oscuro"}
+              title={dark ? "Modo claro" : "Modo oscuro"}
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
           </div>
           <button
             onClick={handleSignOut}
@@ -129,13 +147,22 @@ function AuthedLayout() {
           </div>
           <span className="text-sm font-semibold">SafetyDesk</span>
         </div>
-        <button
-          onClick={handleSignOut}
-          className="rounded-md p-2 text-muted-foreground hover:text-foreground"
-          aria-label="Cerrar sesión"
-        >
-          <LogOut className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={toggleTheme}
+            className="rounded-md p-2 text-muted-foreground hover:text-foreground"
+            aria-label={dark ? "Modo claro" : "Modo oscuro"}
+          >
+            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+          <button
+            onClick={handleSignOut}
+            className="rounded-md p-2 text-muted-foreground hover:text-foreground"
+            aria-label="Cerrar sesión"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
+        </div>
       </header>
 
       <nav className="sticky top-[52px] z-10 flex gap-1 overflow-x-auto border-b border-border bg-background px-3 py-2 lg:hidden">
