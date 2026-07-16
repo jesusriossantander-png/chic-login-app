@@ -66,7 +66,7 @@ export function DocumentacionPage({ user, adminOnly = true }: { user: User; admi
             <BookOpen className="h-5 w-5" />
             <span className="text-xs font-semibold uppercase tracking-wider">Biblioteca</span>
           </div>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight">Documentación</h1>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight">Documentación.</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Material de consulta y capacitación organizado por área.
           </p>
@@ -93,7 +93,7 @@ export function DocumentacionPage({ user, adminOnly = true }: { user: User; admi
                   selectedArea === area ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-surface hover:text-foreground"
                 }`}
               >
-                {area}
+                {area === "TALLER" ? "TALLER." : area}
                 <span className="text-xs">›</span>
               </button>
             ))}
