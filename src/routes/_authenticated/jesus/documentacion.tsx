@@ -7,5 +7,5 @@ export const Route = createFileRoute("/_authenticated/jesus/documentacion")({
 
 function JesusDocumentacionRoute() {
   const { user } = Route.useRouteContext();
-  return <DocumentacionPage user={user} />;
+  return <DocumentacionPage user={user} adminOnly={false} />;
 }

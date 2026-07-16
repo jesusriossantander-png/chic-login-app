@@ -8,7 +8,7 @@ import type { User } from "@supabase/supabase-js";
 const areas = ["SEG E HIG", "TALLER", "MECANIZADO", "VEHICULOS", "PLANTA"] as const;
 type Area = (typeof areas)[number];
 
-export function DocumentacionPage({ user }: { user: User }) {
+export function DocumentacionPage({ user, adminOnly = true }: { user: User; adminOnly?: boolean }) {
   const qc = useQueryClient();
   const [selectedArea, setSelectedArea] = useState<Area>(areas[0]);
   const [openUpload, setOpenUpload] = useState(false);
@@ -56,6 +56,7 @@ export function DocumentacionPage({ user }: { user: User }) {
   }
 
   const isAdmin = profile.data?.role === "admin";
+  const canUpload = !adminOnly || isAdmin;
 
   return (
     <div>
@@ -70,7 +71,7 @@ export function DocumentacionPage({ user }: { user: User }) {
             Material de consulta y capacitación organizado por área.
           </p>
         </div>
-        {isAdmin && (
+        {canUpload && (
           <button
             onClick={() => setOpenUpload(true)}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
@@ -126,7 +127,7 @@ export function DocumentacionPage({ user }: { user: User }) {
             <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
               <div className="grid h-12 w-12 place-items-center rounded-full bg-surface text-muted-foreground"><FileText className="h-5 w-5" /></div>
               <p className="mt-3 text-sm text-muted-foreground">Todavía no hay documentos en esta área.</p>
-              {isAdmin && <button onClick={() => setOpenUpload(true)} className="mt-3 text-sm font-medium text-primary hover:underline">Subir el primero</button>}
+              {canUpload && <button onClick={() => setOpenUpload(true)} className="mt-3 text-sm font-medium text-primary hover:underline">Subir el primero</button>}
             </div>
           )}
         </section>
