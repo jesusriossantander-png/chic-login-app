@@ -17,6 +17,10 @@ import { Route as AuthenticatedInformesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedDocumentacionRouteImport } from './routes/_authenticated/documentacion'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedConduccionRouteImport } from './routes/_authenticated/conduccion'
+import { Route as AuthenticatedJesusRouteRouteImport } from './routes/_authenticated/jesus/route'
+import { Route as AuthenticatedJesusPendientesRouteImport } from './routes/_authenticated/jesus/pendientes'
+import { Route as AuthenticatedJesusMultasRouteImport } from './routes/_authenticated/jesus/multas'
+import { Route as AuthenticatedJesusDocumentacionRouteImport } from './routes/_authenticated/jesus/documentacion'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -58,65 +62,112 @@ const AuthenticatedConduccionRoute = AuthenticatedConduccionRouteImport.update({
   path: '/conduccion',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedJesusRouteRoute = AuthenticatedJesusRouteRouteImport.update({
+  id: '/jesus',
+  path: '/jesus',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJesusPendientesRoute =
+  AuthenticatedJesusPendientesRouteImport.update({
+    id: '/pendientes',
+    path: '/pendientes',
+    getParentRoute: () => AuthenticatedJesusRouteRoute,
+  } as any)
+const AuthenticatedJesusMultasRoute =
+  AuthenticatedJesusMultasRouteImport.update({
+    id: '/multas',
+    path: '/multas',
+    getParentRoute: () => AuthenticatedJesusRouteRoute,
+  } as any)
+const AuthenticatedJesusDocumentacionRoute =
+  AuthenticatedJesusDocumentacionRouteImport.update({
+    id: '/documentacion',
+    path: '/documentacion',
+    getParentRoute: () => AuthenticatedJesusRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/jesus': typeof AuthenticatedJesusRouteRouteWithChildren
   '/conduccion': typeof AuthenticatedConduccionRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documentacion': typeof AuthenticatedDocumentacionRoute
   '/informes': typeof AuthenticatedInformesRoute
   '/vehiculos': typeof AuthenticatedVehiculosRoute
+  '/jesus/documentacion': typeof AuthenticatedJesusDocumentacionRoute
+  '/jesus/multas': typeof AuthenticatedJesusMultasRoute
+  '/jesus/pendientes': typeof AuthenticatedJesusPendientesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/jesus': typeof AuthenticatedJesusRouteRouteWithChildren
   '/conduccion': typeof AuthenticatedConduccionRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documentacion': typeof AuthenticatedDocumentacionRoute
   '/informes': typeof AuthenticatedInformesRoute
   '/vehiculos': typeof AuthenticatedVehiculosRoute
+  '/jesus/documentacion': typeof AuthenticatedJesusDocumentacionRoute
+  '/jesus/multas': typeof AuthenticatedJesusMultasRoute
+  '/jesus/pendientes': typeof AuthenticatedJesusPendientesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/jesus': typeof AuthenticatedJesusRouteRouteWithChildren
   '/_authenticated/conduccion': typeof AuthenticatedConduccionRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documentacion': typeof AuthenticatedDocumentacionRoute
   '/_authenticated/informes': typeof AuthenticatedInformesRoute
   '/_authenticated/vehiculos': typeof AuthenticatedVehiculosRoute
+  '/_authenticated/jesus/documentacion': typeof AuthenticatedJesusDocumentacionRoute
+  '/_authenticated/jesus/multas': typeof AuthenticatedJesusMultasRoute
+  '/_authenticated/jesus/pendientes': typeof AuthenticatedJesusPendientesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/jesus'
     | '/conduccion'
     | '/dashboard'
     | '/documentacion'
     | '/informes'
     | '/vehiculos'
+    | '/jesus/documentacion'
+    | '/jesus/multas'
+    | '/jesus/pendientes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/jesus'
     | '/conduccion'
     | '/dashboard'
     | '/documentacion'
     | '/informes'
     | '/vehiculos'
+    | '/jesus/documentacion'
+    | '/jesus/multas'
+    | '/jesus/pendientes'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/jesus'
     | '/_authenticated/conduccion'
     | '/_authenticated/dashboard'
     | '/_authenticated/documentacion'
     | '/_authenticated/informes'
     | '/_authenticated/vehiculos'
+    | '/_authenticated/jesus/documentacion'
+    | '/_authenticated/jesus/multas'
+    | '/_authenticated/jesus/pendientes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,10 +234,57 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConduccionRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/jesus': {
+      id: '/_authenticated/jesus'
+      path: '/jesus'
+      fullPath: '/jesus'
+      preLoaderRoute: typeof AuthenticatedJesusRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jesus/pendientes': {
+      id: '/_authenticated/jesus/pendientes'
+      path: '/pendientes'
+      fullPath: '/jesus/pendientes'
+      preLoaderRoute: typeof AuthenticatedJesusPendientesRouteImport
+      parentRoute: typeof AuthenticatedJesusRouteRoute
+    }
+    '/_authenticated/jesus/multas': {
+      id: '/_authenticated/jesus/multas'
+      path: '/multas'
+      fullPath: '/jesus/multas'
+      preLoaderRoute: typeof AuthenticatedJesusMultasRouteImport
+      parentRoute: typeof AuthenticatedJesusRouteRoute
+    }
+    '/_authenticated/jesus/documentacion': {
+      id: '/_authenticated/jesus/documentacion'
+      path: '/documentacion'
+      fullPath: '/jesus/documentacion'
+      preLoaderRoute: typeof AuthenticatedJesusDocumentacionRouteImport
+      parentRoute: typeof AuthenticatedJesusRouteRoute
+    }
   }
 }
 
+interface AuthenticatedJesusRouteRouteChildren {
+  AuthenticatedJesusDocumentacionRoute: typeof AuthenticatedJesusDocumentacionRoute
+  AuthenticatedJesusMultasRoute: typeof AuthenticatedJesusMultasRoute
+  AuthenticatedJesusPendientesRoute: typeof AuthenticatedJesusPendientesRoute
+}
+
+const AuthenticatedJesusRouteRouteChildren: AuthenticatedJesusRouteRouteChildren =
+  {
+    AuthenticatedJesusDocumentacionRoute: AuthenticatedJesusDocumentacionRoute,
+    AuthenticatedJesusMultasRoute: AuthenticatedJesusMultasRoute,
+    AuthenticatedJesusPendientesRoute: AuthenticatedJesusPendientesRoute,
+  }
+
+const AuthenticatedJesusRouteRouteWithChildren =
+  AuthenticatedJesusRouteRoute._addFileChildren(
+    AuthenticatedJesusRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedJesusRouteRoute: typeof AuthenticatedJesusRouteRouteWithChildren
   AuthenticatedConduccionRoute: typeof AuthenticatedConduccionRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentacionRoute: typeof AuthenticatedDocumentacionRoute
@@ -195,6 +293,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedJesusRouteRoute: AuthenticatedJesusRouteRouteWithChildren,
   AuthenticatedConduccionRoute: AuthenticatedConduccionRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentacionRoute: AuthenticatedDocumentacionRoute,

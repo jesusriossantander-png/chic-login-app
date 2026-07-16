@@ -1,7 +1,8 @@
 import { createFileRoute, Outlet, redirect, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, CarFront, LayoutDashboard, ClipboardList, Gauge, LogOut, Shield } from "lucide-react";
+import { CarFront, LayoutDashboard, ClipboardList, Gauge, LogOut, Shield, FolderTree, ChevronDown, BookOpen, Gavel, ListTodo } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -17,8 +18,13 @@ const nav = [
   { to: "/dashboard", label: "Panel.", icon: LayoutDashboard },
   { to: "/informes", label: "Informes", icon: ClipboardList },
   { to: "/conduccion", label: "Conducción", icon: Gauge },
-  { to: "/documentacion", label: "Documentación", icon: BookOpen },
   { to: "/vehiculos", label: "Vehículos", icon: CarFront },
+] as const;
+
+const jesusSubItems = [
+  { to: "/jesus/documentacion", label: "Documentación", icon: BookOpen },
+  { to: "/jesus/multas", label: "Multas", icon: Gavel },
+  { to: "/jesus/pendientes", label: "Pendientes", icon: ListTodo },
 ] as const;
 
 function AuthedLayout() {
@@ -26,6 +32,7 @@ function AuthedLayout() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [jesusOpen, setJesusOpen] = useState(pathname.startsWith("/jesus"));
 
   async function handleSignOut() {
     await queryClient.cancelQueries();
@@ -33,6 +40,8 @@ function AuthedLayout() {
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   }
+
+  const jesusActive = pathname.startsWith("/jesus");
 
   return (
     <div className="min-h-screen bg-background">
@@ -62,6 +71,42 @@ function AuthedLayout() {
               </Link>
             );
           })}
+          <div className="pt-1">
+            <button
+              onClick={() => setJesusOpen(!jesusOpen)}
+              className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ${
+                jesusActive
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:bg-surface hover:text-foreground"
+              }`}
+            >
+              <FolderTree className="h-4 w-4" />
+              JESUS
+              <ChevronDown className={`ml-auto h-4 w-4 transition-transform ${jesusOpen ? "" : "-rotate-90"}`} />
+            </button>
+            {jesusOpen && (
+              <div className="ml-4 mt-1 space-y-1">
+                {jesusSubItems.map((item) => {
+                  const active = pathname === item.to || pathname.startsWith(item.to + "/");
+                  const SubIcon = item.icon;
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ${
+                        active
+                          ? "bg-accent text-accent-foreground"
+                          : "text-muted-foreground hover:bg-surface hover:text-foreground"
+                      }`}
+                    >
+                      <SubIcon className="h-4 w-4" />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </nav>
         <div className="border-t border-border p-3">
           <div className="mb-2 px-2 text-xs text-muted-foreground">
@@ -94,7 +139,7 @@ function AuthedLayout() {
       </header>
 
       <nav className="sticky top-[52px] z-10 flex gap-1 overflow-x-auto border-b border-border bg-background px-3 py-2 lg:hidden">
-        {nav.map((item) => {
+        {[...nav, { to: "/jesus/documentacion", label: "JESUS", icon: FolderTree }].map((item) => {
           const active = pathname.startsWith(item.to);
           const Icon = item.icon;
           return (
