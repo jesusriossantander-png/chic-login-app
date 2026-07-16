@@ -155,7 +155,7 @@ function AuthPage() {
       </div>
 
       <style>{`
-        .input {
+        :where(.input) {
           width: 100%;
           border-radius: 0.5rem;
           border: 1px solid var(--color-border);
