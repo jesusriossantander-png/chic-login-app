@@ -23,7 +23,7 @@ export function Header() {
       transition={{ duration: 0.55, ease: "easeOut" }}
       className={cn(
         "sticky top-0 z-50 border-b border-transparent transition-all duration-300",
-        isScrolled && "border-[#0F7A45]/10 bg-[#F8FBF9]/78 shadow-sm backdrop-blur-xl",
+        isScrolled && "border-black/5 bg-white/80 shadow-sm backdrop-blur-xl",
       )}
     >
       <nav
@@ -31,7 +31,7 @@ export function Header() {
         aria-label="Navegacion principal"
       >
         <Link to="/" className="group flex items-center gap-3" aria-label="Ir al inicio de ESIM">
-          <span className="grid h-11 w-11 place-items-center rounded-2xl border border-[#0F7A45]/12 bg-white/80 shadow-[0_12px_34px_-22px_rgba(15,122,69,0.65)] transition group-hover:scale-[1.03]">
+          <span className="grid h-11 w-11 place-items-center rounded-2xl border border-black/10 bg-white shadow-[0_12px_34px_-22px_rgba(15,122,69,0.65)] transition group-hover:scale-[1.03]">
             <ShieldCheck className="h-5 w-5 text-[#0F7A45]" aria-hidden="true" />
           </span>
           <span className="leading-tight">
@@ -44,7 +44,7 @@ export function Header() {
 
         <Button
           asChild
-          className="h-10 rounded-full bg-[#111827] px-5 text-sm text-white shadow-[0_16px_36px_-24px_rgba(17,24,39,0.7)] transition hover:scale-[1.02] hover:bg-[#0F7A45]"
+          className="h-10 rounded-full bg-foreground px-5 text-sm text-background shadow-[0_16px_36px_-24px_rgba(17,24,39,0.7)] transition hover:scale-[1.02] hover:bg-primary"
         >
           <Link to="/auth" aria-label="Ingresar a la plataforma ESIM">
             Ingresar

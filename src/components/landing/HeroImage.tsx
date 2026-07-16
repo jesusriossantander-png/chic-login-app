@@ -20,7 +20,7 @@ export function HeroImage() {
       <div className="absolute -right-8 bottom-10 hidden h-36 w-36 rounded-full bg-[#0F7A45]/12 blur-3xl md:block" />
 
       <div className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/62 p-4 shadow-[0_34px_90px_-42px_rgba(15,122,69,0.52)] backdrop-blur-2xl">
-        <div className="rounded-[1.55rem] border border-[#0F7A45]/10 bg-gradient-to-br from-white via-[#F8FBF9] to-[#DDF3E7] p-5">
+        <div className="rounded-[1.55rem] border border-[#0F7A45]/10 bg-white p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-[#0F7A45]" />

@@ -20,7 +20,7 @@ export function FeatureCard({ title, description, icon: Icon, index }: FeatureCa
       whileHover={{ y: -6 }}
       className="h-full"
     >
-      <Card className="h-full rounded-[1.35rem] border-[#0F7A45]/10 bg-white/72 shadow-[0_22px_60px_-42px_rgba(17,24,39,0.6)] backdrop-blur-xl transition-shadow hover:shadow-[0_28px_70px_-44px_rgba(15,122,69,0.72)]">
+      <Card className="h-full rounded-[1.35rem] border-black/10 bg-white shadow-[0_22px_60px_-42px_rgba(17,24,39,0.6)] transition-shadow hover:shadow-[0_28px_70px_-44px_rgba(15,122,69,0.72)]">
         <CardHeader className="space-y-4 p-5">
           <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[#0F7A45]/8 text-[#0F7A45]">
             <Icon className="h-5 w-5" aria-hidden="true" />

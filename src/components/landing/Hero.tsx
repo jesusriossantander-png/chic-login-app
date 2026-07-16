@@ -22,7 +22,7 @@ export function Hero() {
           <motion.div
             variants={item}
             transition={{ duration: 0.55, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 rounded-full border border-[#0F7A45]/12 bg-white/68 px-3.5 py-2 text-sm font-semibold text-[#0F7A45] shadow-[0_14px_36px_-30px_rgba(15,122,69,0.7)] backdrop-blur-xl"
+            className="inline-flex items-center gap-2 rounded-full border border-[#0F7A45]/12 bg-white px-3.5 py-2 text-sm font-semibold text-[#0F7A45] shadow-[0_14px_36px_-30px_rgba(15,122,69,0.7)]"
           >
             <span className="h-2 w-2 rounded-full bg-[#1FA463]" />
             Seguridad Industrial, Higiene y Medio Ambiente
@@ -64,7 +64,7 @@ export function Hero() {
             <Button
               asChild
               variant="outline"
-              className="h-12 rounded-full border-[#0F7A45]/16 bg-white/68 px-6 text-[15px] font-semibold text-[#111827] shadow-[0_18px_40px_-30px_rgba(17,24,39,0.65)] backdrop-blur-xl transition hover:scale-[1.02] hover:bg-white hover:text-[#0F7A45]"
+              className="h-12 rounded-full border-[#0F7A45]/16 bg-white px-6 text-[15px] font-semibold text-[#111827] shadow-[0_18px_40px_-30px_rgba(17,24,39,0.65)] transition hover:scale-[1.02] hover:bg-gray-50 hover:text-[#0F7A45]"
             >
               <a href="#beneficios" aria-label="Conocer la plataforma ESIM">
                 Conocer la plataforma

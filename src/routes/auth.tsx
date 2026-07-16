@@ -63,25 +63,20 @@ function AuthPage() {
 
   return (
     <div className="grid min-h-screen bg-background md:grid-cols-2">
-      <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-[#1a3a6a] via-[#0f1a3e] to-[#0b1120] p-10 text-white md:flex">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-blue-400/10 blur-3xl" />
-          <div className="absolute -bottom-20 -right-20 h-96 w-96 rounded-full bg-indigo-400/10 blur-3xl" />
-          <div className="absolute left-1/2 top-1/3 h-40 w-40 rounded-full bg-blue-300/5 blur-2xl" />
-        </div>
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-white p-10 text-foreground md:flex">
         <div className="relative flex items-center gap-2">
           <img src="/esim-institucional.png" alt="ESIM S.R.L." className="h-8 w-auto object-contain" />
           <span className="text-sm font-semibold">ESIM S.R.L.</span>
         </div>
         <div className="relative">
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight">
+          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-foreground">
             Registra, mide y mejora la seguridad de tu operación.
           </h2>
-          <p className="mt-3 max-w-md text-sm text-white/60">
+          <p className="mt-3 max-w-md text-sm text-muted-foreground">
             Informes de seguridad e higiene y control de conducción con puntaje, en un panel claro.
           </p>
         </div>
-        <p className="relative text-xs text-white/40">© {new Date().getFullYear()} SafetyDesk</p>
+        <p className="relative text-xs text-muted-foreground">© {new Date().getFullYear()} SafetyDesk</p>
       </div>
 
       <div className="flex items-center justify-center px-6 py-12">
