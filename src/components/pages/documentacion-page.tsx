@@ -8,13 +8,51 @@ import type { User } from "@supabase/supabase-js";
 const areas = ["SEG E HIG", "TALLER", "MECANIZADO", "VEHICULOS", "PLANTA"] as const;
 type Area = (typeof areas)[number];
 
+const LOCAL_DOCUMENTS_KEY = "safetydesk:documents";
+
+type LocalDocument = {
+  id: string;
+  area: Area;
+  title: string;
+  description: string | null;
+  file_name: string;
+  file_path: string;
+  file_size: number;
+  mime_type: string;
+  uploaded_by: string;
+  created_at: string;
+};
+
+function isMissingSupabaseTable(error: unknown) {
+  return typeof error === "object" && error !== null && "code" in error && (error as { code?: string }).code === "PGRST205";
+}
+
+function readLocal<T>(key: string): T[] {
+  try { return JSON.parse(localStorage.getItem(key) ?? "[]") as T[]; } catch { return []; }
+}
+
+function writeLocal<T>(key: string, values: T[]) {
+  localStorage.setItem(key, JSON.stringify(values));
+}
+
+function fileToDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export function DocumentacionPage({ user, adminOnly = true }: { user: User; adminOnly?: boolean }) {
   const qc = useQueryClient();
   const [selectedArea, setSelectedArea] = useState<Area>(areas[0]);
   const [openUpload, setOpenUpload] = useState(false);
+  const [localMode, setLocalMode] = useState(true);
 
   const profile = useQuery({
     queryKey: ["profile", user.id],
+    enabled: !localMode,
     queryFn: async () => {
       const { data, error } = await supabase.from("profiles").select("role").eq("id", user.id).single();
       if (error) throw error;
@@ -23,20 +61,28 @@ export function DocumentacionPage({ user, adminOnly = true }: { user: User; admi
   });
 
   const documents = useQuery({
-    queryKey: ["documents", selectedArea],
+    queryKey: ["documents", selectedArea, localMode],
     queryFn: async () => {
+      if (localMode) return readLocal<LocalDocument>(LOCAL_DOCUMENTS_KEY).filter((d) => d.area === selectedArea);
       const { data, error } = await supabase
         .from("documents")
         .select("*")
         .eq("area", selectedArea)
         .order("created_at", { ascending: false });
-      if (error) throw error;
+      if (error) {
+        if (isMissingSupabaseTable(error)) { setLocalMode(true); return readLocal<LocalDocument>(LOCAL_DOCUMENTS_KEY).filter((d) => d.area === selectedArea); }
+        throw error;
+      }
       return data;
     },
   });
 
   const remove = useMutation({
-    mutationFn: async (document: (typeof documents.data)[number]) => {
+    mutationFn: async (document: LocalDocument) => {
+      if (localMode) {
+        writeLocal(LOCAL_DOCUMENTS_KEY, readLocal<LocalDocument>(LOCAL_DOCUMENTS_KEY).filter((d) => d.id !== document.id));
+        return;
+      }
       const { error: storageError } = await supabase.storage.from("documents").remove([document.file_path]);
       if (storageError) throw storageError;
       const { error } = await supabase.from("documents").delete().eq("id", document.id);
@@ -49,10 +95,22 @@ export function DocumentacionPage({ user, adminOnly = true }: { user: User; admi
     onError: (error: Error) => toast.error(error.message),
   });
 
-  async function download(document: (typeof documents.data)[number]) {
-    const { data, error } = await supabase.storage.from("documents").createSignedUrl(document.file_path, 300);
-    if (error) return toast.error(error.message);
-    window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+  function download(document: LocalDocument) {
+    if (localMode) {
+      if (document.file_path.startsWith("data:")) {
+        const link = window.document.createElement("a");
+        link.href = document.file_path;
+        link.download = document.file_name;
+        link.click();
+      } else {
+        toast.info("Archivo disponible solo en el servidor");
+      }
+      return;
+    }
+    supabase.storage.from("documents").createSignedUrl(document.file_path, 300).then(({ data, error }) => {
+      if (error) return toast.error(error.message);
+      window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+    });
   }
 
   const isAdmin = profile.data?.role === "admin";
@@ -133,12 +191,12 @@ export function DocumentacionPage({ user, adminOnly = true }: { user: User; admi
         </section>
       </div>
 
-      {openUpload && <UploadModal area={selectedArea} userId={user.id} onClose={() => setOpenUpload(false)} />}
+      {openUpload && <UploadModal area={selectedArea} userId={user.id} localMode={localMode} onClose={() => setOpenUpload(false)} />}
     </div>
   );
 }
 
-function UploadModal({ area, userId, onClose }: { area: Area; userId: string; onClose: () => void }) {
+function UploadModal({ area, userId, localMode, onClose }: { area: Area; userId: string; localMode: boolean; onClose: () => void }) {
   const qc = useQueryClient();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -149,11 +207,30 @@ function UploadModal({ area, userId, onClose }: { area: Area; userId: string; on
     event.preventDefault();
     if (!file || !title.trim()) return toast.error("Completá el título y seleccioná un archivo");
     setLoading(true);
-    const filePath = `${area}/${crypto.randomUUID()}-${file.name}`;
     try {
+      if (localMode) {
+        const dataUrl = await fileToDataUrl(file);
+        const localDoc: LocalDocument = {
+          id: crypto.randomUUID(), area, title: title.trim(),
+          description: description.trim() || null, file_name: file.name,
+          file_path: dataUrl, file_size: file.size,
+          mime_type: file.type || "application/octet-stream",
+          uploaded_by: userId, created_at: new Date().toISOString(),
+        };
+        writeLocal(LOCAL_DOCUMENTS_KEY, [...readLocal<LocalDocument>(LOCAL_DOCUMENTS_KEY), localDoc]);
+        toast.success("Documento subido (local)");
+        qc.invalidateQueries({ queryKey: ["documents"] });
+        onClose();
+        return;
+      }
+      const filePath = `${area}/${crypto.randomUUID()}-${file.name}`;
       const { error: uploadError } = await supabase.storage.from("documents").upload(filePath, file, { upsert: false });
       if (uploadError) throw uploadError;
-      const { error } = await supabase.from("documents").insert({ area, title: title.trim(), description: description.trim() || null, file_name: file.name, file_path: filePath, file_size: file.size, mime_type: file.type || "application/octet-stream", uploaded_by: userId });
+      const { error } = await supabase.from("documents").insert({
+        area, title: title.trim(), description: description.trim() || null,
+        file_name: file.name, file_path: filePath, file_size: file.size,
+        mime_type: file.type || "application/octet-stream", uploaded_by: userId,
+      });
       if (error) {
         await supabase.storage.from("documents").remove([filePath]);
         throw error;
@@ -162,7 +239,22 @@ function UploadModal({ area, userId, onClose }: { area: Area; userId: string; on
       qc.invalidateQueries({ queryKey: ["documents"] });
       onClose();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudo subir el documento");
+      if (isMissingSupabaseTable(error)) {
+        const dataUrl = await fileToDataUrl(file);
+        const localDoc: LocalDocument = {
+          id: crypto.randomUUID(), area, title: title.trim(),
+          description: description.trim() || null, file_name: file.name,
+          file_path: dataUrl, file_size: file.size,
+          mime_type: file.type || "application/octet-stream",
+          uploaded_by: userId, created_at: new Date().toISOString(),
+        };
+        writeLocal(LOCAL_DOCUMENTS_KEY, [...readLocal<LocalDocument>(LOCAL_DOCUMENTS_KEY), localDoc]);
+        toast.success("Documento subido (local)");
+        qc.invalidateQueries({ queryKey: ["documents"] });
+        onClose();
+      } else {
+        toast.error(error instanceof Error ? error.message : "No se pudo subir el documento");
+      }
     } finally {
       setLoading(false);
     }
@@ -175,7 +267,7 @@ function UploadModal({ area, userId, onClose }: { area: Area; userId: string; on
         <form onSubmit={submit} className="space-y-4 p-5">
           <label className="block"><span className="mb-1.5 block text-xs font-medium">Título</span><input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ej. Inducción de seguridad" required /></label>
           <label className="block"><span className="mb-1.5 block text-xs font-medium">Descripción (opcional)</span><textarea className="input min-h-20 resize-y" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Breve descripción del material" /></label>
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-border p-4 text-sm hover:bg-surface"><Upload className="h-5 w-5 text-primary" /><span className="min-w-0 flex-1 truncate text-muted-foreground">{file?.name ?? "Seleccionar archivo"}</span><input type="file" className="sr-only" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" onChange={(e) => setFile(e.target.files?.[0] ?? null)} required /></label>
+          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-border p-4 text-sm hover:bg-surface"><Upload className="h-5 w-5 text-primary" /><span className="min-w-0 flex-1 truncate text-muted-foreground">{file?.name ?? "Seleccionar archivo"}</span><input type="file" className="sr-only" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.png,.jpg" onChange={(e) => setFile(e.target.files?.[0] ?? null)} required /></label>
           <button type="submit" disabled={loading} className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-60">{loading && <Loader2 className="h-4 w-4 animate-spin" />} Subir documento</button>
         </form>
       </div>
