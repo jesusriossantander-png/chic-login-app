@@ -9,9 +9,14 @@ import {
   TrendingUp,
   Clock,
   User,
+  Database,
+  Loader2,
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { PersonSearch } from "@/components/pages/person-search";
+import { useState } from "react";
+import { seedSampleData } from "@/lib/seed-data";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardPage,
@@ -19,6 +24,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function DashboardPage() {
   const { user } = Route.useRouteContext();
+  const [seeding, setSeeding] = useState(false);
 
   const reports = useQuery({
     queryKey: ["safety_reports", user.id],
@@ -74,8 +80,34 @@ function DashboardPage() {
         <p className="mt-1 text-sm text-muted-foreground">
           Buscá un nombre o apellido para ver en qué módulos aparece asociado.
         </p>
-        <div className="mt-3 max-w-lg">
-          <PersonSearch />
+        <div className="mt-3 flex flex-wrap items-start gap-3">
+          <div className="min-w-0 flex-1 max-w-lg">
+            <PersonSearch />
+          </div>
+          <button
+            onClick={async () => {
+              setSeeding(true);
+              try {
+                const result = seedSampleData();
+                const total = result.vehicles + result.fines;
+                if (total > 0) {
+                  toast.success(`Se cargaron ${result.vehicles} vehículos y ${result.fines} multas de ejemplo`);
+                  window.location.reload();
+                } else {
+                  toast.info("Ya hay datos cargados. Limpiá el localStorage para recargar.");
+                }
+              } catch (e) {
+                toast.error("Error al cargar datos de ejemplo");
+              } finally {
+                setSeeding(false);
+              }
+            }}
+            disabled={seeding}
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-medium text-muted-foreground transition hover:bg-surface hover:text-foreground disabled:opacity-50"
+          >
+            {seeding ? <Loader2 className="h-4 w-4 animate-spin" /> : <Database className="h-4 w-4" />}
+            {seeding ? "Cargando..." : "Cargar datos de ejemplo"}
+          </button>
         </div>
       </div>
 
