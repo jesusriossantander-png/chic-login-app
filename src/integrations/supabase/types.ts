@@ -57,6 +57,7 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          role: "user" | "admin"
           updated_at: string
         }
         Insert: {
@@ -65,6 +66,7 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          role?: "user" | "admin"
           updated_at?: string
         }
         Update: {
@@ -73,7 +75,47 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          role?: "user" | "admin"
           updated_at?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          area: string
+          created_at: string
+          description: string | null
+          file_name: string
+          file_path: string
+          file_size: number
+          id: string
+          mime_type: string
+          title: string
+          uploaded_by: string
+        }
+        Insert: {
+          area: string
+          created_at?: string
+          description?: string | null
+          file_name: string
+          file_path: string
+          file_size?: number
+          id?: string
+          mime_type?: string
+          title: string
+          uploaded_by: string
+        }
+        Update: {
+          area?: string
+          created_at?: string
+          description?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          id?: string
+          mime_type?: string
+          title?: string
+          uploaded_by?: string
         }
         Relationships: []
       }
