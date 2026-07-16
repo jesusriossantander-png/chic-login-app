@@ -70,10 +70,8 @@ function AuthPage() {
           <div className="absolute left-1/2 top-1/3 h-40 w-40 rounded-full bg-blue-300/5 blur-2xl" />
         </div>
         <div className="relative flex items-center gap-2">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-white/10 backdrop-blur">
-            <Shield className="h-4 w-4" />
-          </div>
-          <span className="text-sm font-semibold">SafetyDesk</span>
+          <img src="/esim-institucional.png" alt="ESIM S.R.L." className="h-8 w-auto object-contain" />
+          <span className="text-sm font-semibold">ESIM S.R.L.</span>
         </div>
         <div className="relative">
           <h2 className="text-3xl font-semibold leading-tight tracking-tight">
@@ -90,10 +88,8 @@ function AuthPage() {
         <div className="w-full max-w-sm">
           <div className="mb-8 md:hidden">
             <div className="flex items-center gap-2">
-              <div className="grid h-8 w-8 place-items-center rounded-lg bg-foreground text-background">
-                <Shield className="h-4 w-4" />
-              </div>
-              <span className="text-sm font-semibold">SafetyDesk</span>
+              <img src="/esim-institucional.png" alt="ESIM S.R.L." className="h-8 w-auto object-contain" />
+              <span className="text-sm font-semibold">ESIM S.R.L.</span>
             </div>
           </div>
 

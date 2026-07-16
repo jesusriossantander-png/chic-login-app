@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { CarFront, LayoutDashboard, ClipboardList, Gauge, LogOut, Shield, FolderTree, ChevronDown, BookOpen, Gavel, ListTodo, Sun, Moon } from "lucide-react";
+import { CarFront, LayoutDashboard, ClipboardList, Gauge, LogOut, FolderTree, ChevronDown, BookOpen, Gavel, ListTodo, Sun, Moon } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -55,10 +55,8 @@ function AuthedLayout() {
     <div className="min-h-screen bg-background">
       <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r border-border bg-card backdrop-blur-xl lg:flex dark:bg-white/[0.04]">
         <div className="flex items-center gap-2 px-5 py-5">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-foreground text-background">
-            <Shield className="h-4 w-4" />
-          </div>
-          <span className="text-sm font-semibold tracking-tight">SafetyDesk</span>
+          <img src="/esim-institucional.png" alt="ESIM S.R.L." className="h-8 w-auto object-contain" />
+          <span className="text-sm font-semibold tracking-tight">ESIM S.R.L.</span>
         </div>
         <nav className="mt-2 flex-1 space-y-1 px-3">
           {nav.map((item) => {
@@ -142,10 +140,8 @@ function AuthedLayout() {
 
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/80 px-5 py-3 backdrop-blur lg:hidden">
         <div className="flex items-center gap-2">
-          <div className="grid h-7 w-7 place-items-center rounded-md bg-foreground text-background">
-            <Shield className="h-3.5 w-3.5" />
-          </div>
-          <span className="text-sm font-semibold">SafetyDesk</span>
+          <img src="/esim-institucional.png" alt="ESIM S.R.L." className="h-7 w-auto object-contain" />
+          <span className="text-sm font-semibold">ESIM S.R.L.</span>
         </div>
         <div className="flex items-center gap-1">
           <button
