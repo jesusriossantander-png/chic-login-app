@@ -33,14 +33,13 @@ export function HeroImage() {
           </div>
 
           <div className="mt-8 grid min-h-[360px] place-items-center rounded-[1.25rem] border border-white/80 bg-white/45 px-6 py-8 shadow-inner">
-            <div className="relative grid aspect-square w-[44%] min-w-36 place-items-center rounded-[2rem] border border-[#0F7A45]/12 bg-white shadow-[0_28px_70px_-35px_rgba(15,122,69,0.9)]">
-              <div className="absolute inset-4 rounded-[1.5rem] bg-[#0F7A45]/6" />
+            <div className="relative grid aspect-[1680/638] w-[82%] place-items-center overflow-hidden rounded-[1.5rem] border border-[#0F7A45]/12 bg-white shadow-[0_28px_70px_-35px_rgba(15,122,69,0.9)]">
               <img
-                src="/favicon.ico"
+                src="/esim-institucional.png"
                 alt="Imagen institucional de ESIM S.R.L."
                 loading="lazy"
                 decoding="async"
-                className="relative h-20 w-20 object-contain"
+                className="relative h-full w-full object-contain"
               />
             </div>
           </div>

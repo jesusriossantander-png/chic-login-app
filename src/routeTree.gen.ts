@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedInformesRouteImport } from './routes/_authenticated/informes'
+import { Route as AuthenticatedDocumentacionRouteImport } from './routes/_authenticated/documentacion'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedConduccionRouteImport } from './routes/_authenticated/conduccion'
 
@@ -35,6 +36,12 @@ const AuthenticatedInformesRoute = AuthenticatedInformesRouteImport.update({
   path: '/informes',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDocumentacionRoute =
+  AuthenticatedDocumentacionRouteImport.update({
+    id: '/documentacion',
+    path: '/documentacion',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/conduccion': typeof AuthenticatedConduccionRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/documentacion': typeof AuthenticatedDocumentacionRoute
   '/informes': typeof AuthenticatedInformesRoute
 }
 export interface FileRoutesByTo {
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/conduccion': typeof AuthenticatedConduccionRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/documentacion': typeof AuthenticatedDocumentacionRoute
   '/informes': typeof AuthenticatedInformesRoute
 }
 export interface FileRoutesById {
@@ -67,13 +76,26 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/conduccion': typeof AuthenticatedConduccionRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/documentacion': typeof AuthenticatedDocumentacionRoute
   '/_authenticated/informes': typeof AuthenticatedInformesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/conduccion' | '/dashboard' | '/informes'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/conduccion'
+    | '/dashboard'
+    | '/documentacion'
+    | '/informes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/conduccion' | '/dashboard' | '/informes'
+  to:
+    | '/'
+    | '/auth'
+    | '/conduccion'
+    | '/dashboard'
+    | '/documentacion'
+    | '/informes'
   id:
     | '__root__'
     | '/'
@@ -81,6 +103,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/conduccion'
     | '/_authenticated/dashboard'
+    | '/_authenticated/documentacion'
     | '/_authenticated/informes'
   fileRoutesById: FileRoutesById
 }
@@ -120,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedInformesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/documentacion': {
+      id: '/_authenticated/documentacion'
+      path: '/documentacion'
+      fullPath: '/documentacion'
+      preLoaderRoute: typeof AuthenticatedDocumentacionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -140,12 +170,14 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedConduccionRoute: typeof AuthenticatedConduccionRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDocumentacionRoute: typeof AuthenticatedDocumentacionRoute
   AuthenticatedInformesRoute: typeof AuthenticatedInformesRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConduccionRoute: AuthenticatedConduccionRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDocumentacionRoute: AuthenticatedDocumentacionRoute,
   AuthenticatedInformesRoute: AuthenticatedInformesRoute,
 }
 

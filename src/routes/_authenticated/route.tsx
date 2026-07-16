@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, ClipboardList, Gauge, LogOut, Shield } from "lucide-react";
+import { BookOpen, LayoutDashboard, ClipboardList, Gauge, LogOut, Shield } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -17,6 +17,7 @@ const nav = [
   { to: "/dashboard", label: "Panel", icon: LayoutDashboard },
   { to: "/informes", label: "Informes", icon: ClipboardList },
   { to: "/conduccion", label: "Conducción", icon: Gauge },
+  { to: "/documentacion", label: "Documentación", icon: BookOpen },
 ] as const;
 
 function AuthedLayout() {
