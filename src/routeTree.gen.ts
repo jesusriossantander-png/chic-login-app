@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedVehiculosRouteImport } from './routes/_authenticated/vehiculos'
 import { Route as AuthenticatedInformesRouteImport } from './routes/_authenticated/informes'
 import { Route as AuthenticatedDocumentacionRouteImport } from './routes/_authenticated/documentacion'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedVehiculosRoute = AuthenticatedVehiculosRouteImport.update({
+  id: '/vehiculos',
+  path: '/vehiculos',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedInformesRoute = AuthenticatedInformesRouteImport.update({
   id: '/informes',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documentacion': typeof AuthenticatedDocumentacionRoute
   '/informes': typeof AuthenticatedInformesRoute
+  '/vehiculos': typeof AuthenticatedVehiculosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documentacion': typeof AuthenticatedDocumentacionRoute
   '/informes': typeof AuthenticatedInformesRoute
+  '/vehiculos': typeof AuthenticatedVehiculosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documentacion': typeof AuthenticatedDocumentacionRoute
   '/_authenticated/informes': typeof AuthenticatedInformesRoute
+  '/_authenticated/vehiculos': typeof AuthenticatedVehiculosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documentacion'
     | '/informes'
+    | '/vehiculos'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documentacion'
     | '/informes'
+    | '/vehiculos'
   id:
     | '__root__'
     | '/'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/documentacion'
     | '/_authenticated/informes'
+    | '/_authenticated/vehiculos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -135,6 +147,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/vehiculos': {
+      id: '/_authenticated/vehiculos'
+      path: '/vehiculos'
+      fullPath: '/vehiculos'
+      preLoaderRoute: typeof AuthenticatedVehiculosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/informes': {
       id: '/_authenticated/informes'
@@ -172,6 +191,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentacionRoute: typeof AuthenticatedDocumentacionRoute
   AuthenticatedInformesRoute: typeof AuthenticatedInformesRoute
+  AuthenticatedVehiculosRoute: typeof AuthenticatedVehiculosRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -179,6 +199,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentacionRoute: AuthenticatedDocumentacionRoute,
   AuthenticatedInformesRoute: AuthenticatedInformesRoute,
+  AuthenticatedVehiculosRoute: AuthenticatedVehiculosRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
