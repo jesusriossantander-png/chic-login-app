@@ -57,6 +57,7 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          role: "user" | "admin"
           updated_at: string
         }
         Insert: {
@@ -65,6 +66,7 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          role?: "user" | "admin"
           updated_at?: string
         }
         Update: {
@@ -73,8 +75,105 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          role?: "user" | "admin"
           updated_at?: string
         }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          area: string
+          created_at: string
+          description: string | null
+          file_name: string
+          file_path: string
+          file_size: number
+          id: string
+          mime_type: string
+          title: string
+          uploaded_by: string
+        }
+        Insert: {
+          area: string
+          created_at?: string
+          description?: string | null
+          file_name: string
+          file_path: string
+          file_size?: number
+          id?: string
+          mime_type?: string
+          title: string
+          uploaded_by: string
+        }
+        Update: Partial<Database["public"]["Tables"]["documents"]["Insert"]>
+        Relationships: []
+      }
+      vehicles: {
+        Row: {
+          id: string
+          user_id: string
+          internal_number: string | null
+          license_plate: string
+          vehicle_type: string
+          brand: string | null
+          model: string | null
+          vehicle_year: number | null
+          color: string | null
+          mileage: number | null
+          driver_name: string | null
+          driver_document: string | null
+          driver_license: string | null
+          driver_license_expiry: string | null
+          notes: string | null
+          photo_path: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          internal_number?: string | null
+          license_plate: string
+          vehicle_type?: string
+          brand?: string | null
+          model?: string | null
+          vehicle_year?: number | null
+          color?: string | null
+          mileage?: number | null
+          driver_name?: string | null
+          driver_document?: string | null
+          driver_license?: string | null
+          driver_license_expiry?: string | null
+          notes?: string | null
+          photo_path?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Database["public"]["Tables"]["vehicles"]["Insert"]>
+        Relationships: []
+      }
+      vehicle_documents: {
+        Row: {
+          id: string
+          vehicle_id: string
+          user_id: string
+          document_type: string
+          file_name: string
+          file_path: string
+          expiry_date: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          vehicle_id: string
+          user_id: string
+          document_type: string
+          file_name: string
+          file_path: string
+          expiry_date?: string | null
+          created_at?: string
+        }
+        Update: Partial<Database["public"]["Tables"]["vehicle_documents"]["Insert"]>
         Relationships: []
       }
       safety_reports: {
