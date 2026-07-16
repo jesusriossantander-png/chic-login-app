@@ -46,7 +46,7 @@ function AuthedLayout() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    window.location.href = "https://pretty-web-login.lovable.app";
   }
 
   const jesusActive = pathname.startsWith("/jesus");
