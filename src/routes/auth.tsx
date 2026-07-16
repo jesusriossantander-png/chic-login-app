@@ -63,22 +63,27 @@ function AuthPage() {
 
   return (
     <div className="grid min-h-screen bg-background md:grid-cols-2">
-      <div className="hidden flex-col justify-between bg-foreground p-10 text-background md:flex">
-        <div className="flex items-center gap-2">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-background/10">
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-[#1a3a6a] via-[#0f1a3e] to-[#0b1120] p-10 text-white md:flex">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-blue-400/10 blur-3xl" />
+          <div className="absolute -bottom-20 -right-20 h-96 w-96 rounded-full bg-indigo-400/10 blur-3xl" />
+          <div className="absolute left-1/2 top-1/3 h-40 w-40 rounded-full bg-blue-300/5 blur-2xl" />
+        </div>
+        <div className="relative flex items-center gap-2">
+          <div className="grid h-8 w-8 place-items-center rounded-lg bg-white/10 backdrop-blur">
             <Shield className="h-4 w-4" />
           </div>
           <span className="text-sm font-semibold">SafetyDesk</span>
         </div>
-        <div>
+        <div className="relative">
           <h2 className="text-3xl font-semibold leading-tight tracking-tight">
             Registra, mide y mejora la seguridad de tu operación.
           </h2>
-          <p className="mt-3 max-w-md text-sm text-background/70">
+          <p className="mt-3 max-w-md text-sm text-white/60">
             Informes de seguridad e higiene y control de conducción con puntaje, en un panel claro.
           </p>
         </div>
-        <p className="text-xs text-background/50">© {new Date().getFullYear()} SafetyDesk</p>
+        <p className="relative text-xs text-white/40">© {new Date().getFullYear()} SafetyDesk</p>
       </div>
 
       <div className="flex items-center justify-center px-6 py-12">

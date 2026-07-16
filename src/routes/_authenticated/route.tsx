@@ -53,7 +53,7 @@ function AuthedLayout() {
 
   return (
     <div className="min-h-screen bg-background">
-      <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r border-border bg-card lg:flex">
+      <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r border-border bg-card backdrop-blur-xl lg:flex dark:bg-white/[0.04]">
         <div className="flex items-center gap-2 px-5 py-5">
           <div className="grid h-8 w-8 place-items-center rounded-lg bg-foreground text-background">
             <Shield className="h-4 w-4" />
