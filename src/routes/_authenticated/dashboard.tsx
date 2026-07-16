@@ -8,8 +8,10 @@ import {
   CheckCircle2,
   TrendingUp,
   Clock,
+  User,
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { PersonSearch } from "@/components/pages/person-search";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardPage,
@@ -61,6 +63,19 @@ function DashboardPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             Resumen de tus informes y controles activos.
           </p>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <div className="flex items-center gap-2 text-primary">
+          <User className="h-5 w-5" />
+          <span className="text-xs font-semibold uppercase tracking-wider">Personas</span>
+        </div>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Buscá un nombre o apellido para ver en qué módulos aparece asociado.
+        </p>
+        <div className="mt-3 max-w-lg">
+          <PersonSearch />
         </div>
       </div>
 
