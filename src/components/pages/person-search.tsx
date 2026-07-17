@@ -117,7 +117,7 @@ export function PersonSearch() {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={handleFocus}
           placeholder="Buscar persona por nombre o apellido..."
-          className="input w-full pl-9 pr-9"
+          className="input input--search w-full pr-9"
         />
         {query && (
           <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
@@ -166,7 +166,7 @@ export function PersonSearch() {
         </div>
       )}
 
-      <style>{`:where(.input) { width: 100%; border-radius: 0.75rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.625rem 0.75rem; font-size: 0.875rem; outline: none; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
+      <style>{`:where(.input) { width: 100%; border-radius: 0.75rem; border: 1px solid var(--color-border); background: var(--color-card); font-size: 0.875rem; outline: none; } .input:not(.input--search) { padding: 0.625rem 0.75rem; } .input--search { padding: 0.625rem 2.5rem 0.625rem 2.5rem; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
     </div>
   );
 }

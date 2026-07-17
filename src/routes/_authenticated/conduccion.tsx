@@ -79,7 +79,7 @@ function ConduccionPage() {
 
       <div className="relative mt-6 max-w-md">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <input className="input pl-9" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por conductor o vehículo..." />
+        <input className="input input--search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por conductor o vehículo..." />
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -125,7 +125,7 @@ function ConduccionPage() {
       </div>
 
       {open && <NewControlModal onClose={() => setOpen(false)} userId={user.id} />}
-      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.55rem 0.7rem; font-size: 0.875rem; outline: none; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
+      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); font-size: 0.875rem; outline: none; } .input:not(.input--search) { padding: 0.55rem 0.7rem; } .input--search { padding: 0.55rem 2.5rem; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
     </div>
   );
 }
@@ -243,10 +243,11 @@ function NewControlModal({ onClose, userId }: { onClose: () => void; userId: str
           border-radius: 0.5rem;
           border: 1px solid var(--color-border);
           background: var(--color-card);
-          padding: 0.55rem 0.7rem;
           font-size: 0.875rem;
           outline: none;
         }
+        .input:not(.input--search) { padding: 0.55rem 0.7rem; }
+        .input--search { padding: 0.55rem 2.5rem; }
         .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }
       `}</style>
     </div>

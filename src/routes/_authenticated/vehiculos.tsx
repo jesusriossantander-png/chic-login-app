@@ -88,7 +88,7 @@ function VehiculosPage() {
         <button onClick={() => setOpenNew(true)} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"><Plus className="h-4 w-4" /> Agregar vehículo</button>
       </div>
 
-      <div className="relative mt-8 max-w-md"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input className="input pl-9" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por patente, interno, marca o chofer..." /></div>
+      <div className="relative mt-8 max-w-md"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input className="input input--search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar por patente, interno, marca o chofer..." /></div>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card">
         {vehicles.isLoading ? <div className="flex justify-center py-16 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /></div> : filtered.length ? (
@@ -99,7 +99,7 @@ function VehiculosPage() {
       </div>
 
       {(selected || openNew) && <VehicleModal vehicle={selected} userId={user.id} localMode={localMode} onClose={() => { setSelected(null); setOpenNew(false); }} />}
-      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.625rem 0.75rem; font-size: 0.875rem; outline: none; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
+      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); font-size: 0.875rem; outline: none; } .input:not(.input--search) { padding: 0.625rem 0.75rem; } .input--search { padding: 0.625rem 2.5rem; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
     </div>
   );
 }

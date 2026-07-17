@@ -105,7 +105,7 @@ export function PendientesPage({ user }: { user: User }) {
       <div className="mt-8 flex flex-wrap items-center gap-3">
         <div className="relative max-w-md flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input className="input pl-9" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar pendientes..." />
+          <input className="input input--search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar pendientes..." />
         </div>
         <div className="flex gap-1 rounded-xl border border-border bg-card p-1">
           {(["todas", "pendientes", "completadas"] as const).map((f) => (
@@ -160,7 +160,7 @@ export function PendientesPage({ user }: { user: User }) {
       </div>
 
       {openNew && <PendingModal userId={user.id} localMode={localMode} onClose={() => setOpenNew(false)} />}
-      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.625rem 0.75rem; font-size: 0.875rem; outline: none; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
+      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); font-size: 0.875rem; outline: none; } .input:not(.input--search) { padding: 0.625rem 0.75rem; } .input--search { padding: 0.625rem 2.5rem; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
     </div>
   );
 }
@@ -254,7 +254,7 @@ function PendingModal({ userId, localMode, onClose }: { userId: string; localMod
           </button>
         </form>
       </div>
-      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); padding: 0.625rem 0.75rem; font-size: 0.875rem; outline: none; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
+      <style>{`:where(.input) { width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); background: var(--color-card); font-size: 0.875rem; outline: none; } .input:not(.input--search) { padding: 0.625rem 0.75rem; } .input--search { padding: 0.625rem 2.5rem; } .input:focus { border-color: var(--color-ring); box-shadow: 0 0 0 3px oklch(from var(--color-ring) l c h / 0.18); }`}</style>
     </div>
   );
 }
